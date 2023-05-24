@@ -84,39 +84,23 @@ app.get("/auth/callback", async (req, res) => {
 });
 
 const sendAutoReply = async (email) => {
-  const reply = {
-    to: email.from,
-    subject: "Auto Reply",
-    text: `Thank you for your email. I'm currently on vacation but will respond to you as soon as I can.`,
-  };
+    const reply = {
+        to: email.from,
+        subject: "Auto Reply",
+        text: `Thank you for your email. I'm currently on vacation but will respond to you as soon as I can.`,
+    };
 
-  await gmail.users.messages.send({
-    userId: "me",
-    requestBody: {
-      raw: decrypteMessage(reply),
-      labelIds: ["vacation"],
-    },
-  });
-};
-
-const decrypteMessage = (email) => {
-  const message = [
-    `To: ${email.to}`,
-    'Content-Type: text/plain; charset="UTF-8"',
-    "MIME-Version: 1.0",
-    "Content-Transfer-Encoding: 7bit",
-    `Subject: ${email.subject}`,
-    "",
-    email.text,
-  ].join("\n");
-
-  return Buffer.from(message).toString("base64");
+    await gmail.users.messages.send({
+        userId: "me",
+        requestBody: {
+            raw: decrypteMessage(reply),
+            labelIds: ["vacation"],
+        },
+    });
 };
 
 
-const getRandomInterval = (min, max) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
