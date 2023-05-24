@@ -96,6 +96,19 @@ const sendAutoReply = async (email) => {
         },
     });
 };
+const decrypteMessage = (email) => {
+    const message = [
+        `To: ${email.to}`,
+        'Content-Type: text/plain; charset="UTF-8"',
+        "MIME-Version: 1.0",
+        "Content-Transfer-Encoding: 7bit",
+        `Subject: ${email.subject}`,
+        "",
+        email.text,
+    ].join("\n");
+
+    return Buffer.from(message).toString("base64");
+};
 
 const getRandomInterval = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
